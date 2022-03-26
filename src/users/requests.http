@@ -1,3 +1,14 @@
+GET http://localhost:3000/auth?email=dayus@email.com
+Accept: application/json
+
+###
+GET http://localhost:3000/auth/1
+Accept: application/json
+
+###
+GET http://localhost:3000/auth
+Accept: application/json
+
 ### Create a new user
 POST http://localhost:3000/auth/signup
 Content-Type: application/json
@@ -7,4 +18,14 @@ Content-Type: application/json
   "password": "password"
 }
 
+### Update user
+PATCH http://localhost:3000/auth/2
+Content-Type: application/json
+
+{
+  "password": "pass"
+}
+
 ###
+DELETE http://localhost:3000/auth/1
+Accept: application/json
