@@ -1,6 +1,8 @@
 ## Description
 
-NestJS app to simulate car sell register
+NestJS app to simulate car sell register. This app is part of the course
+[NestJS: The Complete Developer's Guide](https://www.udemy.com/course/nestjs-the-complete-developers-guide/) by Stephen Grider
+
 
 ## Installation
 
