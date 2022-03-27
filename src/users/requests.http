@@ -2,7 +2,7 @@ GET http://localhost:3000/auth?email=dayus@email.com
 Accept: application/json
 
 ###
-GET http://localhost:3000/auth/1
+GET http://localhost:3000/auth/2
 Accept: application/json
 
 ###
@@ -14,7 +14,16 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email": "dayus@email.com",
+  "email": "dayus1@email.com",
+  "password": "password"
+}
+
+### Signin a new user
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "dayus1@email.com",
   "password": "password"
 }
 
