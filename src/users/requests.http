@@ -1,3 +1,12 @@
+GET http://localhost:3000/auth/whoami
+Accept: application/json
+
+###
+POST http://localhost:3000/auth/signout
+Accept: application/json
+
+
+###
 GET http://localhost:3000/auth?email=dayus@email.com
 Accept: application/json
 
@@ -14,7 +23,7 @@ POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email": "dayus1@email.com",
+  "email": "dayus2@email.com",
   "password": "password"
 }
 
@@ -23,7 +32,7 @@ POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-  "email": "dayus1@email.com",
+  "email": "dayus2@email.com",
   "password": "password"
 }
 
