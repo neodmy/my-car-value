@@ -40,4 +40,17 @@ describe('AuthService', () => {
     expect(salt).toBeDefined();
     expect(hash).toBeDefined();
   });
+
+  it('throws an error if users signs up with email that is in use', async (done) => {
+    fakeUsersService.find = () =>
+      Promise.resolve([
+        { id: 1, email: 'email@email.com', password: '1' } as User,
+      ]);
+
+    try {
+      await service.signup('email@email.com', 'password');
+    } catch (err) {
+      done();
+    }
+  });
 });
