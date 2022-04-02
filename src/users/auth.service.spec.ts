@@ -2,6 +2,7 @@ import { Test } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -9,10 +10,21 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     // Create UsersService mock with the functions AuthService needs from it
+    const users: User[] = [];
     fakeUsersService = {
-      find: () => Promise.resolve([]),
-      create: (email: string, password: string) =>
-        Promise.resolve({ id: 1, email, password } as User),
+      find: (email: string) => {
+        const filteredUsers = users.filter((user) => user.email === email);
+        return Promise.resolve(filteredUsers);
+      },
+      create: (email: string, password: string) => {
+        const user = {
+          id: Math.floor(Math.random() * 999999),
+          email,
+          password,
+        } as User;
+        users.push(user);
+        return Promise.resolve(user);
+      },
     };
     // Create DI Container
     const module = await Test.createTestingModule({
@@ -42,11 +54,7 @@ describe('AuthService', () => {
   });
 
   it('throws an error if users signs up with email that is in use', async () => {
-    fakeUsersService.find = () =>
-      Promise.resolve([
-        { id: 1, email: 'email@email.com', password: '1' } as User,
-      ]);
-
+    await service.signup('email@email.com', 'password');
     try {
       await service.signup('email@email.com', 'password');
     } catch (err) {
@@ -62,5 +70,23 @@ describe('AuthService', () => {
       expect(err).toBeInstanceOf(NotFoundException);
       expect(err.message).toBe('User not found');
     }
+  });
+
+  it('throws if an invalid password is provided', async () => {
+    await service.signup('email@email.com', 'password');
+
+    try {
+      await service.signin('email@email.com', 'password1');
+    } catch (err) {
+      expect(err).toBeDefined();
+      expect(err.message).toBe('Bad password');
+    }
+  });
+
+  it('returns a user if correct password is provided', async () => {
+    await service.signup('email@email.com', 'mypassword');
+
+    const user = await service.signin('email@email.com', 'mypassword');
+    expect(user).toBeDefined();
   });
 });
