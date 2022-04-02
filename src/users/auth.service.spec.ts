@@ -41,7 +41,7 @@ describe('AuthService', () => {
     expect(hash).toBeDefined();
   });
 
-  it('throws an error if users signs up with email that is in use', async (done) => {
+  it('throws an error if users signs up with email that is in use', async () => {
     fakeUsersService.find = () =>
       Promise.resolve([
         { id: 1, email: 'email@email.com', password: '1' } as User,
@@ -50,7 +50,17 @@ describe('AuthService', () => {
     try {
       await service.signup('email@email.com', 'password');
     } catch (err) {
-      done();
+      expect(err).toBeInstanceOf(BadRequestException);
+      expect(err.message).toBe('Email in use');
+    }
+  });
+
+  it('throws if signin is called with an unused email', async () => {
+    try {
+      await service.signin('email@email.com', 'password');
+    } catch (err) {
+      expect(err).toBeInstanceOf(NotFoundException);
+      expect(err.message).toBe('User not found');
     }
   });
 });
