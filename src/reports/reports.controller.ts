@@ -27,8 +27,6 @@ export class ReportsController {
     return this.reportsService.create(body, user);
   }
 
-  // This guard isn't working because it depends on an user being attached to the request by the current-user interceptor
-  // The execution order in NestJS is -> middlewares, guards, interceptors (right before or right after the request handler)
   @Patch('/:id')
   @UseGuards(AdminGuard)
   approveReport(@Param('id') id: string, @Body() body: ApproveReportDto) {
