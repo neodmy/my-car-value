@@ -1,8 +1,18 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { UsersService } from '../users.service';
+import { User } from '../user.entity';
 
-// This Auth guard isn't working because it depends on an user being attached to the request by the current-user interceptor
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      currentUser?: User;
+    }
+  }
+}
+
+// The Auth guard isn't working because it depends on an user being attached to the request by the current-user interceptor
 // The execution order in NestJS is -> middlewares, guards, interceptors (right before or right after the request handler)
 // So we need the interceptor to become a middleware for it to execute before the auth guard
 
@@ -15,7 +25,7 @@ export class CurrentUserMiddleware implements NestMiddleware {
     const { userId } = req.session || {};
     if (userId) {
       const user = await this.usersService.findOne(userId);
-      // @ts-ignore
+
       req.currentUser = user;
     }
     next();
