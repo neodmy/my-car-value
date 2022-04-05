@@ -14,6 +14,7 @@ import { User } from '../users/user.entity';
 import { ReportDto } from './dtos/report.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { ApproveReportDto } from './dtos/approve-report.dto';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('reports')
 export class ReportsController {
@@ -26,7 +27,10 @@ export class ReportsController {
     return this.reportsService.create(body, user);
   }
 
+  // This guard isn't working because it depends on an user being attached to the request by the current-user interceptor
+  // The execution order in NestJS is -> middlewares, guards, interceptors (right before or right after the request handler)
   @Patch('/:id')
+  @UseGuards(AdminGuard)
   approveReport(@Param('id') id: string, @Body() body: ApproveReportDto) {
     return this.reportsService.changeApproval(Number(id), body.approved);
   }
