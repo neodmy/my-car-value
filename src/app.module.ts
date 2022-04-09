@@ -46,12 +46,14 @@ const cookieSession = require('cookie-session');
   ],
 })
 export class AppModule {
+  constructor(private configService: ConfigService) {}
+
   // runs when the app starts listening for incoming requests
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(
         cookieSession({
-          keys: ['asdfgh'], // @TODO: remove hardcoded key
+          keys: [this.configService.get('COOKIE_KEY')],
         }),
       )
       .forRoutes('*'); // For every request
