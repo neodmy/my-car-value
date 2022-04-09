@@ -8,7 +8,7 @@ import { ReportsModule } from './reports/reports.module';
 import { User } from './users/user.entity';
 import { Report } from './reports/report.entity';
 // ConfigModule -> .env file to read
-// ConfigService -> exponse the env vars to the rest of the components,
+// ConfigService -> expose the env vars to the rest of the components,
 import { ConfigModule, ConfigService } from '@nestjs/config';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cookieSession = require('cookie-session');
