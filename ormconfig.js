@@ -12,9 +12,13 @@ const getEnvConfig = () => {
       migrationsRun: true,
     }),
     production: () => ({
-      type: 'sqlite',
-      database: 'test.sqlite',
-      entities: ['**/*.entity.ts'],
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      migrationsRun: true,
+      entities: ['**/*.entity.js'],
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     default: () => {
       throw new Error('unknown environment');
