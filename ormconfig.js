@@ -9,6 +9,7 @@ const getEnvConfig = () => {
       type: 'sqlite',
       database: 'test.sqlite',
       entities: ['**/*.entity.ts'],
+      migrationsRun: true,
     }),
     production: () => ({
       type: 'sqlite',
