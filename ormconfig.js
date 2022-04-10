@@ -24,6 +24,10 @@ const getEnvConfig = () => {
 
 const dbConfig = {
   synchronize: false,
+  migrations: ['migrations/*.js'],
+  cli: {
+    migrationsDir: 'migrations',
+  },
   ...getEnvConfig(),
 };
 
